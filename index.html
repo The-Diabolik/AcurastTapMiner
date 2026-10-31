@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101326">
+<title>Acurast Tap Miner</title>
+<style>
+:root{--bg:#0b0d1a;--panel:#151a30;--line:#2c355b;--cyan:#65f2ff;--violet:#a58bff;--text:#f3f5ff;--muted:#aab2d2;--green:#7cf5bd}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#20264a 0,#0b0d1a 55%);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);min-height:100vh}
+.wrap{max-width:1050px;margin:auto;padding:22px 16px 40px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.brand{font-weight:900;letter-spacing:.08em}.brand span{color:var(--cyan)}.badge{border:1px solid var(--line);border-radius:99px;padding:7px 11px;color:var(--muted);font-size:12px}
+h1{font-size:clamp(28px,5vw,48px);margin:28px 0 6px;line-height:1.05}h1 em{font-style:normal;color:var(--cyan)}.sub{color:var(--muted);margin:0 0 22px}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.panel{background:linear-gradient(145deg,#171d36ed,#111529ed);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 18px 50px #0003}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#0d1124;border:1px solid #242c4e;border-radius:14px;padding:13px}.label{font-size:12px;color:var(--muted)}.value{font-weight:800;font-size:clamp(18px,3vw,25px);margin-top:5px;overflow-wrap:anywhere}
+.minearea{text-align:center;padding:22px 0 12px}.crystal{width:min(56vw,220px);height:min(56vw,220px);border:1px solid #8ff7ff8c;border-radius:50%;margin:4px auto 18px;display:grid;place-items:center;background:radial-gradient(circle,#313d77 0,#1a2045 48%,#101428 72%);box-shadow:0 0 45px #65f2ff22,inset 0 0 35px #a58bff20;cursor:pointer;user-select:none;transition:transform .08s;touch-action:manipulation}.crystal:active{transform:scale(.96)}.crystal .gem{font-size:clamp(68px,13vw,108px);filter:drop-shadow(0 0 16px #65f2ff88)}.minehint{color:var(--muted);font-size:13px}.btn{border:1px solid var(--line);background:#202747;color:var(--text);border-radius:12px;padding:11px 14px;font-weight:750;cursor:pointer}.btn:hover{border-color:var(--cyan)}.btn.primary{background:linear-gradient(90deg,#207f9a,#6554b5);border:0}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}.sectionhead h2{font-size:18px;margin:0}.shop{display:grid;gap:10px}.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px;background:#0d1124;border:1px solid #242c4e;border-radius:13px}.item strong{display:block}.item small{color:var(--muted)}.item .right{text-align:right;min-width:95px}.item .btn{padding:8px 10px;margin-top:6px}.leaderboard{display:grid;gap:8px}.rankrow{display:grid;grid-template-columns:32px 1fr auto;align-items:center;gap:9px;padding:10px 12px;background:#0d1124;border:1px solid #242c4e;border-radius:12px}.ranknum{font-weight:900;color:var(--cyan)}.rankname{font-weight:750}.rankscore{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}.missions{display:grid;gap:8px}.mission{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:13px;padding:9px 0;border-bottom:1px solid #252b48}.mission:last-child{border-bottom:0}.foot{color:#818aaf;font-size:12px;line-height:1.55;margin-top:18px}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#202747;border:1px solid var(--cyan);padding:10px 16px;border-radius:99px;display:none;box-shadow:0 5px 30px #0008}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.wrap{padding:16px 12px 30px}.panel{padding:16px}.stats{gap:7px}.stat{padding:10px}.top{align-items:flex-start}}
+</style>
+</head>
+<body><div class="wrap">
+<header class="top"><div class="brand">ACURAST <span>◆</span> TAP MINER</div><div class="badge">BÊTA V2 • CLASSEMENT DÉMO</div></header>
+<h1>Mine. Améliore.<br><em>Recommence.</em></h1><p class="sub">Construis ton empire de cristaux, un clic à la fois.</p>
+<div class="grid">
+<section class="panel">
+<div class="stats">
+ <div class="stat"><div class="label">CRISTAUX</div><div class="value" id="coins">0</div></div>
+ <div class="stat"><div class="label">PAR CLIC</div><div class="value" id="perClick">1</div></div>
+ <div class="stat"><div class="label">PAR SECONDE</div><div class="value" id="perSec">0</div></div>
+</div>
+<div class="minearea"><button class="crystal" id="mine" aria-label="Miner un cristal"><span class="gem">💎</span></button><div class="minehint">TOUCHE LE CRISTAL POUR MINER</div><p><button class="btn primary" id="daily">🎁 Bonus quotidien</button> <button class="btn" id="save">Sauvegarder</button></p></div>
+<div class="foot">Ta progression est sauvegardée dans ce navigateur. Pour l'instant, les cristaux sont des points de jeu et n'ont aucune valeur monétaire.</div>
+</section>
+<section class="panel">
+<div class="sectionhead"><h2>⚙️ Atelier d'amélioration</h2><span class="badge">3 équipements</span></div><div class="shop" id="shop"></div>
+<div class="sectionhead" style="margin-top:22px"><h2>🏆 Classement hebdomadaire</h2><span class="badge">APERÇU</span></div><div class="leaderboard" id="leaderboard"></div><div class="foot">Les autres scores affichés sont des exemples de démonstration. Un classement réel entre joueurs nécessite un backend connecté.</div><div class="sectionhead" style="margin-top:22px"><h2>🎯 Objectifs</h2></div><div class="missions" id="missions"></div>
+<div class="foot">Le classement multijoueur et les récompenses crypto nécessiteront un backend fiable, une protection anti-triche et une étude de faisabilité distincte.</div>
+</section>
+</div>
+<footer class="foot">Prototype indépendant non officiel. Acurast est une infrastructure de calcul décentralisée ; ce jeu n'est pas affilié à Acurast et ne promet aucun gain en cryptomonnaies.</footer>
+</div><div class="toast" id="toast"></div>
+<script>
+const defaults={coins:0,total:0,weekly:0,click:1,perSec:0,levels:[0,0,0],dailyDate:"",weekKey:"",last:Date.now()};
+let state={...defaults};
+const items=[
+ {name:"Pickaxe quantique",desc:"+1 cristal par clic",base:25,rate:0,click:1},
+ {name:"Drone extracteur",desc:"+1 cristal par seconde",base:60,rate:1,click:0},
+ {name:"Nœud de calcul",desc:"+5 cristaux par seconde",base:300,rate:5,click:0}
+];
+function currentWeekKey(){const d=new Date();const date=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=date.getUTCDay()||7;date.setUTCDate(date.getUTCDate()+4-day);const yearStart=new Date(Date.UTC(date.getUTCFullYear(),0,1));const week=Math.ceil((((date-yearStart)/86400000)+1)/7);return date.getUTCFullYear()+"-S"+String(week).padStart(2,"0")}
+function load(){try{let s=JSON.parse(localStorage.getItem("atm-save"));if(s)state={...defaults,...s};}catch(e){}const wk=currentWeekKey();if(state.weekKey!==wk){state.weekly=0;state.weekKey=wk;}let elapsed=Math.max(0,Math.min(8*3600,(Date.now()-(state.last||Date.now()))/1000));state.coins+=elapsed*state.perSec;state.total+=elapsed*state.perSec;state.weekly+=elapsed*state.perSec;state.last=Date.now();render();}
+function fmt(n){return Math.floor(n).toLocaleString("fr-FR")}
+function cost(i){return Math.floor(items[i].base*Math.pow(1.55,state.levels[i]||0))}
+function toast(t){let el=document.getElementById("toast");el.textContent=t;el.style.display="block";clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.style.display="none",2100)}
+function save(show=true){state.last=Date.now();localStorage.setItem("atm-save",JSON.stringify(state));if(show)toast("Progression sauvegardée ✓")}
+function recalc(){state.click=1+(state.levels[0]||0);state.perSec=(state.levels[1]||0)+5*(state.levels[2]||0)}
+function buy(i){let c=cost(i);if(state.coins<c){toast("Pas assez de cristaux !");return}state.coins-=c;state.levels[i]=(state.levels[i]||0)+1;recalc();render();save(false);toast(items[i].name+" amélioré !")}
+function render(){recalc();document.getElementById("coins").textContent=fmt(state.coins);document.getElementById("perClick").textContent=fmt(state.click);document.getElementById("perSec").textContent=fmt(state.perSec);
+document.getElementById("shop").innerHTML=items.map((it,i)=>`<div class="item"><div><strong>${it.name}</strong><small>${it.desc} • Niveau ${state.levels[i]||0}</small></div><div class="right"><strong>${fmt(cost(i))} 💎</strong><button class="btn" onclick="buy(${i})">Acheter</button></div></div>`).join("");
+let goals=[{t:"Premier clic",d:"Miner au moins 1 cristal",ok:state.total>=1,r:10},{t:"Petit capital",d:"Accumuler 100 cristaux au total",ok:state.total>=100,r:25},{t:"Automatisation",d:"Acheter ton premier drone",ok:state.levels[1]>=1,r:50}];
+const demo=[{n:"CrystalFox",s:12840},{n:"ByteMiner",s:9720},{n:"NovaTap",s:7340},{n:"Toi (score local)",s:Math.floor(state.weekly)}].sort((a,b)=>b.s-a.s);document.getElementById("leaderboard").innerHTML=demo.map((p,i)=>`<div class="rankrow"><span class="ranknum">#${i+1}</span><span class="rankname">${p.n}</span><span class="rankscore">${fmt(p.s)} 💎</span></div>`).join("");
+document.getElementById("missions").innerHTML=goals.map(g=>`<div class="mission"><span>${g.ok?"✅":"◻️"} <b>${g.t}</b><br>${g.d}</span><span>${g.ok?"Terminé":"+"+g.r+" 💎"}</span></div>`).join("");
+document.getElementById("daily").textContent=state.dailyDate===new Date().toLocaleDateString("en-CA")?"✅ Bonus récupéré":"🎁 Bonus quotidien";}
+document.getElementById("mine").addEventListener("click",()=>{state.coins+=state.click;state.total+=state.click;state.weekly+=state.click;render();});
+document.getElementById("save").addEventListener("click",()=>save());
+document.getElementById("daily").addEventListener("click",()=>{let today=new Date().toLocaleDateString("en-CA");if(state.dailyDate===today){toast("Tu as déjà récupéré ton bonus aujourd'hui.");return}state.dailyDate=today;state.coins+=100;state.total+=100;state.weekly+=100;render();save(false);toast("+100 cristaux bonus !")});
+setInterval(()=>{state.coins+=state.perSec;state.total+=state.perSec;state.weekly+=state.perSec;render();},1000);
+setInterval(()=>save(false),10000);
+window.addEventListener("beforeunload",()=>save(false));load();
+</script></body></html>
